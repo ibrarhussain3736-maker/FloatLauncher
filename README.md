@@ -12,3 +12,7 @@ Push to GitHub: the Actions workflow builds the APK (Actions tab, Artifacts).
 
 ## Limits
 Android decides if an app may run in a window. Without freeform support, apps open fullscreen or split-screen.
+
+## Shizuku mode (recommended)
+Install Shizuku, start it with Wireless debugging, then open this app: Grant Shizuku permission,
+Enable freeform, reboot. Apps picked from the bubble now open with windowing mode 5 (freeform).

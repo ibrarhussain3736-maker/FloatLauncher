@@ -48,6 +48,22 @@ class MainActivity : Activity() {
             }
         }
         btn("Stop floating bubble") { stopService(Intent(this, FloatingService::class.java)) }
+        btn("Grant Shizuku permission") {
+            if (!Shell.running()) Toast.makeText(this, "Start Shizuku first", Toast.LENGTH_LONG).show()
+            else Shell.request()
+        }
+        btn("Enable freeform (via Shizuku)") {
+            if (!Shell.ready()) {
+                Toast.makeText(this, "Grant Shizuku permission first", Toast.LENGTH_LONG).show()
+            } else {
+                Thread {
+                    runCatching {
+                        Shell.run("settings put global enable_freeform_support 1; settings put global force_resizable_activities 1")
+                    }
+                }.start()
+                Toast.makeText(this, "Done. Reboot your phone.", Toast.LENGTH_LONG).show()
+            }
+        }
         btn("Open Developer options") {
             try { startActivity(Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS)) }
             catch (e: Exception) { Toast.makeText(this, "Enable Developer options first", Toast.LENGTH_SHORT).show() }

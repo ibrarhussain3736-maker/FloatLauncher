@@ -164,6 +164,14 @@ class FloatingService : Service() {
 
     private fun launchFloating(pkg: String) {
         val intent = packageManager.getLaunchIntentForPackage(pkg) ?: return
+        if (Shell.ready()) {
+            val comp = intent.component?.flattenToShortString()
+            if (comp != null) {
+                hidePanel()
+                Thread { runCatching { Shell.run("am start -n $comp --windowingMode 5") } }.start()
+                return
+            }
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
         val dm = resources.displayMetrics
         val w = (dm.widthPixels * 0.8).toInt()
